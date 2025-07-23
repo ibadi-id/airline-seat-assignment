@@ -1,0 +1,120 @@
+basePath: /
+definitions:
+  handler.CheckRequest:
+    properties:
+      date:
+        example: "2025-07-12"
+        type: string
+      flight_number:
+        example: GA102
+        type: string
+    type: object
+  handler.CheckResponse:
+    properties:
+      exists:
+        example: true
+        type: boolean
+      success:
+        example: true
+        type: boolean
+    type: object
+  handler.GenerateRequest:
+    properties:
+      aircraft:
+        example: Airbus 320
+        type: string
+      date:
+        example: "2025-07-12"
+        type: string
+      flight_number:
+        example: ID102
+        type: string
+      id:
+        example: "98123"
+        type: string
+      name:
+        example: Sarah
+        type: string
+    type: object
+  handler.GenerateResponse:
+    properties:
+      seats:
+        example:
+        - '["3B"'
+        - ' "7C"'
+        - ' "14D"]'
+        items:
+          type: string
+        type: array
+      success:
+        example: true
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for generating and checking airline voucher seats
+  title: Airline Voucher API
+  version: "1.0"
+paths:
+  /api/check:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Flight info
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CheckRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.CheckResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Check if voucher already exists
+      tags:
+      - Voucher
+  /api/generate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Voucher input
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.GenerateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.GenerateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Generate 3 random voucher seats
+      tags:
+      - Voucher
+swagger: "2.0"

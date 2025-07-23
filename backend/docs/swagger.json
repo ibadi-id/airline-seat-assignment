@@ -1,0 +1,179 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for generating and checking airline voucher seats",
+        "title": "Airline Voucher API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/api/check": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Check if voucher already exists",
+                "parameters": [
+                    {
+                        "description": "Flight info",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.CheckRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.CheckResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/generate": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Voucher"
+                ],
+                "summary": "Generate 3 random voucher seats",
+                "parameters": [
+                    {
+                        "description": "Voucher input",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.GenerateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.GenerateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.CheckRequest": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "example": "2025-07-12"
+                },
+                "flight_number": {
+                    "type": "string",
+                    "example": "GA102"
+                }
+            }
+        },
+        "handler.CheckResponse": {
+            "type": "object",
+            "properties": {
+                "exists": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "handler.GenerateRequest": {
+            "type": "object",
+            "properties": {
+                "aircraft": {
+                    "type": "string",
+                    "example": "Airbus 320"
+                },
+                "date": {
+                    "type": "string",
+                    "example": "2025-07-12"
+                },
+                "flight_number": {
+                    "type": "string",
+                    "example": "ID102"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "98123"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Sarah"
+                }
+            }
+        },
+        "handler.GenerateResponse": {
+            "type": "object",
+            "properties": {
+                "seats": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "[\"3B\"",
+                        " \"7C\"",
+                        " \"14D\"]"
+                    ]
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        }
+    }
+}
