@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	"github.com/ibadi-id/backend-bc/internal/domain"
+	"github.com/ibadi-id/airline-seat-assignment/backend/internal/domain"
 )
 
 type VoucherRepository interface {

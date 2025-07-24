@@ -8,6 +8,9 @@ definitions:
       flight_number:
         example: GA102
         type: string
+    required:
+    - date
+    - flight_number
     type: object
   handler.CheckResponse:
     properties:
@@ -35,20 +38,43 @@ definitions:
       name:
         example: Sarah
         type: string
+    required:
+    - aircraft
+    - date
+    - flight_number
+    - id
+    - name
     type: object
   handler.GenerateResponse:
     properties:
       seats:
         example:
-        - '["3B"'
-        - ' "7C"'
-        - ' "14D"]'
+        - 3B
+        - 7C
+        - 14D
         items:
           type: string
         type: array
       success:
         example: true
         type: boolean
+    type: object
+  handler.StatusConflictResponse:
+    properties:
+      error:
+        example: vouchers already generated
+        type: string
+    type: object
+  handler.ValidationErrorResponse:
+    properties:
+      errors:
+        additionalProperties:
+          type: string
+        example:
+          aircraft: aircraft type not valid
+          date: date is required
+          flight_number: flight_number is required
+        type: object
     type: object
 host: localhost:8080
 info:
@@ -78,9 +104,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/handler.ValidationErrorResponse'
       summary: Check if voucher already exists
       tags:
       - Voucher
@@ -105,15 +129,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
+            $ref: '#/definitions/handler.ValidationErrorResponse'
+        "409":
+          description: Conflict
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/handler.StatusConflictResponse'
       summary: Generate 3 random voucher seats
       tags:
       - Voucher

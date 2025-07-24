@@ -3,11 +3,12 @@ package main
 import (
 	"net/http"
 
-	"github.com/ibadi-id/backend-bc/config"
-	_ "github.com/ibadi-id/backend-bc/docs"
-	"github.com/ibadi-id/backend-bc/internal/handler"
-	"github.com/ibadi-id/backend-bc/internal/repository"
-	"github.com/ibadi-id/backend-bc/internal/usecase"
+	"github.com/ibadi-id/airline-seat-assignment/backend/config"
+	_ "github.com/ibadi-id/airline-seat-assignment/backend/docs"
+	"github.com/ibadi-id/airline-seat-assignment/backend/internal/handler"
+	"github.com/ibadi-id/airline-seat-assignment/backend/internal/repository"
+	"github.com/ibadi-id/airline-seat-assignment/backend/internal/usecase"
+	"github.com/ibadi-id/airline-seat-assignment/backend/pkg/validator"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
@@ -25,6 +26,7 @@ func main() {
 	h := handler.NewHandler(use)
 
 	e := echo.New()
+	e.Validator = validator.NewValidator()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 

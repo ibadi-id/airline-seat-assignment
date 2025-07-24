@@ -1,36 +1,43 @@
 package usecase
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"time"
 
-	"github.com/ibadi-id/backend-bc/internal/domain"
+	"github.com/ibadi-id/airline-seat-assignment/backend/internal/domain"
+	"github.com/ibadi-id/airline-seat-assignment/backend/internal/repository"
 )
 
-type VoucherUsecase struct {
-	Repo VoucherRepository
+type VoucherUsecase interface {
+	Check(flightNumber, date string) (bool, error)
+	Generate(v domain.Voucher) ([]string, error)
 }
 
-type VoucherRepository interface {
-	Exists(flightNumber, date string) (bool, error)
-	Save(v domain.Voucher) error
+type voucherUsecase struct {
+	Repo repository.VoucherRepository
 }
 
-func NewVoucherUsecase(r VoucherRepository) *VoucherUsecase {
-	return &VoucherUsecase{r}
+func NewVoucherUsecase(r repository.VoucherRepository) VoucherUsecase {
+	return &voucherUsecase{r}
 }
 
-func (u *VoucherUsecase) Check(flightNumber, date string) (bool, error) {
+func (u *voucherUsecase) Check(flightNumber, date string) (bool, error) {
 	return u.Repo.Exists(flightNumber, date)
 }
 
-func (u *VoucherUsecase) Generate(v domain.Voucher) ([]string, error) {
+func (u *voucherUsecase) Generate(v domain.Voucher) ([]string, error) {
 	if exists, _ := u.Repo.Exists(v.FlightNumber, v.FlightDate); exists {
 		return nil, nil
 	}
 
 	seats := generateSeats(v.AircraftType)
+
+	if len(seats) < 3 {
+		return nil, errors.New("aircraft type not valid")
+	}
+
 	v.Seat1, v.Seat2, v.Seat3 = seats[0], seats[1], seats[2]
 
 	err := u.Repo.Save(v)
@@ -51,7 +58,11 @@ func generateSeats(aircraftType string) []string {
 		"Boeing 737 Max": {32, []string{"A", "B", "C", "D", "E", "F"}},
 	}
 
-	conf := layout[aircraftType]
+	conf, ok := layout[aircraftType]
+	if !ok {
+		return nil
+	}
+
 	allSeats := []string{}
 
 	for i := 1; i <= conf.Rows; i++ {

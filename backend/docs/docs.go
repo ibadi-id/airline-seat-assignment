@@ -48,10 +48,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/handler.ValidationErrorResponse"
                         }
                     }
                 }
@@ -90,19 +87,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/handler.ValidationErrorResponse"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "409": {
+                        "description": "Conflict",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/handler.StatusConflictResponse"
                         }
                     }
                 }
@@ -112,6 +103,10 @@ const docTemplate = `{
     "definitions": {
         "handler.CheckRequest": {
             "type": "object",
+            "required": [
+                "date",
+                "flight_number"
+            ],
             "properties": {
                 "date": {
                     "type": "string",
@@ -138,6 +133,13 @@ const docTemplate = `{
         },
         "handler.GenerateRequest": {
             "type": "object",
+            "required": [
+                "aircraft",
+                "date",
+                "flight_number",
+                "id",
+                "name"
+            ],
             "properties": {
                 "aircraft": {
                     "type": "string",
@@ -170,14 +172,39 @@ const docTemplate = `{
                         "type": "string"
                     },
                     "example": [
-                        "[\"3B\"",
-                        " \"7C\"",
-                        " \"14D\"]"
+                        "3B",
+                        "7C",
+                        "14D"
                     ]
                 },
                 "success": {
                     "type": "boolean",
                     "example": true
+                }
+            }
+        },
+        "handler.StatusConflictResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "vouchers already generated"
+                }
+            }
+        },
+        "handler.ValidationErrorResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        "aircraft": "aircraft type not valid",
+                        "date": "date is required",
+                        "flight_number": "flight_number is required"
+                    }
                 }
             }
         }

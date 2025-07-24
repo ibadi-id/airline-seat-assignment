@@ -1,0 +1,22 @@
+all: false
+dir: '{{.InterfaceDir}}'
+filename: '{{.SrcPackageName}}_mocks_test.go'
+force-file-write: true
+formatter: goimports
+include-auto-generated: false
+log-level: info
+structname: '{{.Mock}}{{.InterfaceName}}'
+pkgname: '{{.SrcPackageName}}'
+recursive: false
+require-template-schema-exists: true
+template: testify
+template-schema: '{{.Template}}.schema.json'
+packages:
+  github.com/ibadi-id/airline-seat-assignment/backend/internal/repository:
+    config:
+      all: true
+  github.com/ibadi-id/airline-seat-assignment/backend/internal/usecase:
+    config:
+      all: true
+
+
