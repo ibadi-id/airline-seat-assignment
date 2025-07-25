@@ -29,10 +29,20 @@ This command will build and run both the frontend and backend with docker:
     make up
     ```
 
+or if donthave make you can also can run
+    ```
+    docker-compose up --build -d
+    ```
+
 if you want to run both the frontend and backend without docker:
 
     ```bash
-    make run
+
+    make run-backend
+
+    // open new terminal
+    make run-frontend
+    
     ```
 
 

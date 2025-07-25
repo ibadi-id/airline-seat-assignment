@@ -1,4 +1,4 @@
-.PHONY: up down build logs
+.PHONY: up down build logs run-backend run-frontend lint fmt clean
 
 up:
 	docker-compose up --build -d
