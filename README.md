@@ -22,29 +22,36 @@ This project is a full-stack application that allows users to submit a voucher a
     git clone https://github.com/your-username/airline-voucher.git
     cd airline-voucher
 
-###  2. Run with Docker Compose (Recommended)
+### 2. Run with Docker Compose (Recommended)
 This command will build and run both the frontend and backend with docker:
 
     ```bash
     make up
     ```
 
-or if donthave make you can also can run
+If you don’t have make installed, you can run:
+
     ```
     docker-compose up --build -d
     ```
 
-if you want to run both the frontend and backend without docker:
+### 3. Run Without Docker (Optional)
+
+If you prefer to run the frontend and backend without Docker:
 
     ```bash
 
     make run-backend
-
-    // open new terminal
-    make run-frontend
     
     ```
+Open a new terminal tab/window:
+     
+    ```bash
+    make run-frontend
+    ```
 
+---
+## 🌐 Services
 
 The services will be available at:
 
@@ -52,8 +59,10 @@ Frontend: http://localhost:3000
 
 Backend API: http://localhost:8080
 
-Swager API: http://localhost:8080/swagger/index.html
+Swagger API Docs: http://localhost:8080/swagger/index.html
 
+---
+## ✅ Example Screenshots
 Success Response
 
 ![alt text](success.png)
