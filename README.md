@@ -3,7 +3,7 @@
 This project is a full-stack application that allows users to submit a voucher and get seat assignment results. It includes:
 
 - 🖥️ Frontend: Built with Next.js, TailwindCSS, shadcn/ui
-- 🖧 Backend: Built with Go, Fiber, SQLite, and clean DDD architecture
+- 🖧 Backend: Built with Go, Echo, SQLite, and clean DDD architecture
 - 🐳 Docker Compose setup to run both backend and frontend together
 
 ---
